@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EndoAware - Early Risk Detection for Endometriosis</title>
+    <!-- Premium Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- App Container -->
+    <div class="app-container">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z"/>
+                        <path d="M12 7v10"/>
+                        <path d="M8 12h8"/>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <h1>EndoAware</h1>
+                    <span>Early Risk Detection</span>
+                </div>
+            </div>
+            
+            <nav class="nav-menu">
+                <button class="nav-item active" data-tab="dashboard">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+                    Dashboard
+                </button>
+                <button class="nav-item" data-tab="track">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                    Symptom Log
+                </button>
+                <button class="nav-item" data-tab="analysis">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                    Trend Analysis
+                </button>
+                <button class="nav-item" data-tab="report">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    Medical Report
+                </button>
+                <button class="nav-item" data-tab="learn">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                    Learn & Facts
+                </button>
+            </nav>
+
+            <div class="pitch-mode-box">
+                <h4>Ideathon Pitch Tool</h4>
+                <p>Simulate multi-cycle patient history to show the algorithm in action.</p>
+                <button id="btnLoadDemo" class="btn btn-secondary btn-sm">Load Demo Trends</button>
+                <button id="btnClearDemo" class="btn btn-outline btn-sm">Reset App</button>
+            </div>
+
+            <footer class="sidebar-footer">
+                <p>Presented by Team EndoAware</p>
+            </footer>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            
+            <!-- Header -->
+            <header class="content-header">
+                <div class="header-title">
+                    <span class="tagline">Symptom & Trend Monitoring</span>
+                    <h2 id="view-title">Dashboard Overview</h2>
+                </div>
+                <div class="user-profile">
+                    <div class="avatar">U</div>
+                    <span class="user-name">User Profile</span>
+                </div>
+            </header>
+
+            <!-- Active View Containers -->
+            
+            <!-- 1. DASHBOARD VIEW -->
+            <section id="dashboard" class="tab-view active">
+                <div class="welcome-banner">
+                    <div class="banner-text">
+                        <h2>"When pain becomes normal, disease becomes invisible."</h2>
+                        <p>Endometriosis affects ~1 in 10 women of reproductive age, yet diagnostic delay averages 6–10 years. EndoAware helps track cyclic pain patterns to highlight early warning signs.</p>
+                        <button class="btn btn-primary" onclick="switchTab('track')">Log Today's Symptoms</button>
+                    </div>
+                    <div class="banner-illustration">
+                        <!-- Custom Minimal SVG Flower/Line Art -->
+                        <svg viewBox="0 0 200 200" width="120" height="120">
+                            <path d="M100 20 C110 50, 150 60, 150 100 C150 140, 110 150, 100 180 C90 150, 50 140, 50 100 C50 60, 90 50, 100 20 Z" fill="#fcd34d" opacity="0.2"/>
+                            <path d="M100 40 C110 70, 130 80, 130 100 C130 120, 110 130, 100 160 C90 130, 70 120, 70 100 C70 80, 90 70, 100 40 Z" fill="#fda4af" opacity="0.6"/>
+                            <circle cx="100" cy="100" r="12" fill="#be123c"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Dashboard Summary Grid -->
+                <div class="dashboard-grid">
+                    <!-- Risk Status Card -->
+                    <div class="card risk-status-card" id="riskStatusCard">
+                        <h3>Current Risk Evaluation</h3>
+                        <div class="risk-meter-container">
+                            <div class="risk-gauge">
+                                <svg viewBox="0 0 100 50" class="gauge-svg">
+                                    <path d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke="#e5e7eb" stroke-width="8" stroke-linecap="round"/>
+                                    <path id="gaugeIndicator" d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke="#be123c" stroke-width="8" stroke-linecap="round" stroke-dasharray="126" stroke-dashoffset="126"/>
+                                </svg>
+                                <div class="gauge-label">
+                                    <span id="txtRiskLevel">No Data</span>
+                                    <small id="txtRiskScore">Log cycles to analyze</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="risk-details">
+                            <p id="txtRiskDesc">Please complete a symptom log or click "Load Demo Trends" to evaluate patterns.</p>
+                            <div class="action-alert" id="riskAlertBox" style="display:none;">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#be123c" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                                <span id="riskAlertText">Recommendation: Consult a medical provider.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats Cards -->
+                    <div class="card stats-card">
+                        <h3>Cycle Overview</h3>
+                        <div class="stats-list">
+                            <div class="stat-item">
+                                <div class="stat-icon pink-bg">
+                                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                                </div>
+                                <div class="stat-content">
+                                    <span class="stat-num" id="statCycleCount">0</span>
+                                    <span class="stat-lbl">Cycles Logged</span>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon red-bg">
+                                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                                </div>
+                                <div class="stat-content">
+                                    <span class="stat-num" id="statAvgPain">0/10</span>
+                                    <span class="stat-lbl">Average Pain Rating</span>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon purple-bg">
+                                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                                </div>
+                                <div class="stat-content">
+                                    <span class="stat-num" id="statSymptomCluster">None</span>
+                                    <span class="stat-lbl">Primary Symptoms</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Logs Section -->
+                <div class="card recent-logs-card">
+                    <div class="card-header-flex">
+                        <h3>Log History</h3>
+                        <span class="subtitle">Multi-cycle tracking details</span>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Cycle Date</th>
+                                    <th>Pain Intensity (VAS)</th>
+                                    <th>Symptoms Reported</th>
+                                    <th>Family History</th>
+                                    <th>Risk Factor</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tblLogsBody">
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted">No logs recorded yet. Use the Log tab or Pitch Mode to generate data.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. TRACK SYMPTOM VIEW (DATA INPUT) -->
+            <section id="track" class="tab-view">
+                <div class="form-layout">
+                    <div class="card form-card">
+                        <h3>Symptom & Pain Log</h3>
+                        <p class="subtitle">Record details of your menstrual cycle and recurring physical symptoms to feed the Pattern Analysis Engine.</p>
+                        
+                        <form id="symptomForm">
+                            <!-- Date Input -->
+                            <div class="form-group">
+                                <label for="logDate">Cycle / Period Start Date</label>
+                                <input type="date" id="logDate" required class="form-control">
+                            </div>
+
+                            <!-- Pain Scale (VAS Slider) -->
+                            <div class="form-group">
+                                <div class="flex-label">
+                                    <label for="painSlider">Pain Intensity (VAS Scale 1–10)</label>
+                                    <span class="pain-score-badge" id="painBadge">5</span>
+                                </div>
+                                <input type="range" id="painSlider" min="1" max="10" value="5" class="slider">
+                                <div class="slider-legend">
+                                    <span>1 - Mild/Tolerable</span>
+                                    <span>5 - Interferes with tasks</span>
+                                    <span>10 - Severe/Debilitating</span>
+                                </div>
+                            </div>
+
+                            <!-- Pain Duration / Chronicity -->
+                            <div class="form-group">
+                                <label>Does this pain occur regularly every cycle?</label>
+                                <div class="radio-group">
+                                    <label class="radio-container">
+                                        <input type="radio" name="painRegularity" value="yes" checked>
+                                        <span class="radio-checkmark"></span> Yes, regularly
+                                    </label>
+                                    <label class="radio-container">
+                                        <input type="radio" name="painRegularity" value="no">
+                                        <span class="radio-checkmark"></span> No, it's occasional/new
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Associated Symptoms Checkboxes -->
+                            <div class="form-group">
+                                <label>Associated Symptoms (Select all that apply)</label>
+                                <div class="checkbox-grid">
+                                    <label class="checkbox-container">
+                                        <input type="checkbox" name="symptoms" value="pelvic_pain">
+                                        <span class="checkbox-checkmark"></span>
+                                        <div class="chk-label">
+                                            <strong>Severe Pelvic Pain</strong>
+                                            <small>Pain in lower abdomen outside period</small>
+                                        </div>
+                                    </label>
+                                    <label class="checkbox-container">
+                                        <input type="checkbox" name="symptoms" value="gi_discomfort">
+                                        <span class="checkbox-checkmark"></span>
+                                        <div class="chk-label">
+                                            <strong>Gastrointestinal Discomfort</strong>
+                                            <small>Severe bloating, constipation/diarrhea during period</small>
+                                        </div>
+                                    </label>
+                                    <label class="checkbox-container">
+                                        <input type="checkbox" name="symptoms" value="dyspareunia">
+                                        <span class="checkbox-checkmark"></span>
+                                        <div class="chk-label">
+                                            <strong>Dyspareunia</strong>
+                                            <small>Pain during or after sexual intercourse</small>
+                                        </div>
+                                    </label>
+                                    <label class="checkbox-container">
+                                        <input type="checkbox" name="symptoms" value="fatigue">
+                                        <span class="checkbox-checkmark"></span>
+                                        <div class="chk-label">
+                                            <strong>Chronic Fatigue</strong>
+                                            <small>Extreme exhaustion not resolved by rest</small>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Family History Toggle -->
+                            <div class="form-group">
+                                <label>Family History</label>
+                                <label class="checkbox-container">
+                                    <input type="checkbox" id="familyHistory" value="yes">
+                                    <span class="checkbox-checkmark"></span>
+                                    <div class="chk-label">
+                                        <strong>Mother/Sister diagnosed with Endometriosis</strong>
+                                        <small>Genetic factors increase risk by 7-10x</small>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block">Log & Run Analysis</button>
+                        </form>
+                    </div>
+
+                    <!-- Side guidance card -->
+                    <div class="card info-card bg-rose-light">
+                        <h3>Symptom Normalization is the Barrier</h3>
+                        <p>For decades, society and traditional medical consultations have normalized severe menstrual pain as "just part of being a woman." This contributes to the average <strong>6-10 year diagnostic delay</strong>.</p>
+                        
+                        <div class="quote-box">
+                            <p>"If pelvic pain forces you to miss work, school, or daily activities, it is NOT normal."</p>
+                        </div>
+                        
+                        <h4>Why track multiple parameters?</h4>
+                        <ul>
+                            <li><strong>VAS Pain Scale</strong> highlights standard indicators of clinical distress.</li>
+                            <li><strong>GI discomfort & dyspareunia</strong> signal tissue growth on organs beyond the uterus.</li>
+                            <li><strong>Chronicity</strong> proves it is not a temporary anomaly, which is a key requirement for specialists.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. TREND ANALYSIS VIEW -->
+            <section id="analysis" class="tab-view">
+                <div class="analysis-grid">
+                    <!-- Left: Interactive Custom CSS Chart -->
+                    <div class="card chart-card">
+                        <div class="card-header-flex">
+                            <h3>Multi-Cycle Pain & Symptom Progression</h3>
+                            <span class="badge" id="trendDirection">No Data</span>
+                        </div>
+                        
+                        <div class="custom-chart-wrapper">
+                            <!-- Custom SVG Chart dynamically drawn via JS -->
+                            <svg id="trendSvg" viewBox="0 0 500 240" class="trend-svg">
+                                <!-- Default grid lines -->
+                                <line x1="50" y1="40" x2="480" y2="40" stroke="#f1f5f9" stroke-width="1"/>
+                                <line x1="50" y1="90" x2="480" y2="90" stroke="#f1f5f9" stroke-width="1"/>
+                                <line x1="50" y1="140" x2="480" y2="140" stroke="#f1f5f9" stroke-width="1"/>
+                                <line x1="50" y1="190" x2="480" y2="190" stroke="#f1f5f9" stroke-width="1"/>
+                                
+                                <!-- Axes labels -->
+                                <text x="25" y="45" class="chart-axis-text">10 (Severe)</text>
+                                <text x="25" y="145" class="chart-axis-text">5 (Mod)</text>
+                                <text x="25" y="195" class="chart-axis-text">1 (Mild)</text>
+                                
+                                <!-- Chart contents will be updated dynamically -->
+                                <g id="chartLines"></g>
+                                <g id="chartPoints"></g>
+                                <g id="chartLabels"></g>
+                            </svg>
+                        </div>
+                        <div class="chart-legend">
+                            <span class="legend-item"><span class="bullet red"></span> Pain Intensity (VAS)</span>
+                            <span class="legend-item"><span class="bullet purple"></span> Symptom Density</span>
+                        </div>
+                    </div>
+
+                    <!-- Right: Pattern Analysis Cards -->
+                    <div class="card engine-insights-card">
+                        <h3>Pattern Analysis Insights</h3>
+                        <p class="subtitle">Based on Slide 7: Weighted red-flag scoring engine.</p>
+                        
+                        <div class="insights-stack">
+                            <!-- Insight 1: Chronicity -->
+                            <div class="insight-item" id="insightChronicity">
+                                <div class="insight-hdr">
+                                    <div class="insight-dot"></div>
+                                    <h4>Chronicity Status</h4>
+                                </div>
+                                <p class="insight-desc">No logs recorded to evaluate chronicity. Please enter cycle logs.</p>
+                            </div>
+                            
+                            <!-- Insight 2: Escalation -->
+                            <div class="insight-item" id="insightEscalation">
+                                <div class="insight-hdr">
+                                    <div class="insight-dot"></div>
+                                    <h4>Escalation Trend</h4>
+                                </div>
+                                <p class="insight-desc">Tracking trends requires at least 2 logged cycles.</p>
+                            </div>
+                            
+                            <!-- Insight 3: Clustering -->
+                            <div class="insight-item" id="insightClustering">
+                                <div class="insight-hdr">
+                                    <div class="insight-dot"></div>
+                                    <h4>Symptom Clustering (Red-Flag Score)</h4>
+                                </div>
+                                <p class="insight-desc">Evaluates overlapping conditions like pelvic pain, fatigue, and GI distress.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. MEDICAL REPORT VIEW -->
+            <section id="report" class="tab-view">
+                <div class="report-actions">
+                    <button class="btn btn-secondary" onclick="window.print()">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                        Print/Save Report (PDF)
+                    </button>
+                    <span class="report-tip">⭐ Bring this report to your next clinical checkup to fast-track conversations.</span>
+                </div>
+
+                <!-- Printable Report Sheet -->
+                <div class="report-sheet" id="printReportArea">
+                    <div class="report-header">
+                        <div class="report-brand">
+                            <h2>EndoAware</h2>
+                            <p>Symptom-Based Risk Identification Report</p>
+                        </div>
+                        <div class="report-meta">
+                            <p><strong>Generated on:</strong> <span id="reportGenDate">2026-07-04</span></p>
+                            <p><strong>Report Reference:</strong> #EA-8902B</p>
+                        </div>
+                    </div>
+
+                    <div class="report-divider"></div>
+
+                    <!-- Patient and Summary -->
+                    <div class="report-section-grid">
+                        <div>
+                            <h4>Symptom Profile Summary</h4>
+                            <table class="report-meta-table">
+                                <tr>
+                                    <td><strong>Tracking Period:</strong></td>
+                                    <td id="repTrackingPeriod">No cycles tracked</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cycles Analyzed:</strong></td>
+                                    <td id="repCycleCount">0 cycles</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Avg Pain Score:</strong></td>
+                                    <td><span id="repAvgPain" class="highlight-val">0/10</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Family History:</strong></td>
+                                    <td id="repFamilyHistory">Negative / Not Indicated</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="report-status-box" id="repRiskBox">
+                            <span class="status-lbl">Calculated Risk Index</span>
+                            <h3 id="repRiskLevel">NO DATA</h3>
+                            <p id="repRiskRecommendation">Log details to calculate clinical indicators.</p>
+                        </div>
+                    </div>
+
+                    <!-- Symptoms checklist details -->
+                    <div class="report-sub-section">
+                        <h4>Reported Symptom Cluster & Frequency</h4>
+                        <div class="report-symptom-cards" id="repSymptomGrid">
+                            <!-- Dynamic report symptoms inserted here -->
+                            <p class="text-muted">No symptoms recorded yet.</p>
+                        </div>
+                    </div>
+
+                    <!-- Clinical Timeline -->
+                    <div class="report-sub-section">
+                        <h4>Multi-Cycle Chronicity & Escalation Details</h4>
+                        <table class="report-table">
+                            <thead>
+                                <tr>
+                                    <th>Cycle Date</th>
+                                    <th>Pain VAS</th>
+                                    <th>Associated Symptoms</th>
+                                    <th>Pain Persistence</th>
+                                </tr>
+                            </thead>
+                            <tbody id="repTableBody">
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted">No cycles registered.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Doctor Consultation Prep Sheet (The differentiator!) -->
+                    <div class="report-doctor-prep bg-rose-light">
+                        <h4>Preparation Guide for Your Doctor's Appointment</h4>
+                        <p class="prep-intro">Because chronic menstrual and pelvic pain are frequently dismissed, presenting this objective diary helps your physician recognize patterns. Use the prompts below:</p>
+                        <ol>
+                            <li><strong>Highlight the Chronicity:</strong> "Doctor, as logged here, my pain is cyclical and has occurred regularly across multiple months, with pain levels reaching up to <span id="prepMaxPain">X</span>/10."</li>
+                            <li><strong>Discuss Secondary Growth Symptoms:</strong> "I experience secondary symptoms like pelvic pain during non-menstrual periods, GI distress, and fatigue, which are verified clinical co-factors."</li>
+                            <li><strong>Address Diagnostic History:</strong> Show the gynecologist this calculated pattern report. Request an ultrasound or refer to an endometriosis specialist.</li>
+                        </ol>
+                    </div>
+
+                    <div class="report-footer">
+                        <p><strong>Disclaimer:</strong> EndoAware is an educational screening and digital risk assessment dashboard. It does not replace clinical diagnosis by a certified medical provider or laparoscopy confirmation.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. LEARN & FACTS VIEW -->
+            <section id="learn" class="tab-view">
+                <!-- Main Education Slides Cards Layout -->
+                <div class="learn-header-banner">
+                    <h2>Endometriosis Awareness Center</h2>
+                    <p>Knowledge is the first step to turning normalized pain into actionable awareness.</p>
+                </div>
+
+                <div class="education-grid">
+                    <!-- Slide 3 details -->
+                    <div class="card edu-card">
+                        <div class="card-badge">01</div>
+                        <h3>What is Endometriosis?</h3>
+                        <p>Endometriosis is a chronic inflammatory disorder where tissue similar to the lining of the uterus (endometrium) grows outside the uterus.</p>
+                        <p>It typically affects ovaries, fallopian tubes, and the outer lining of the pelvic cavity. During periods, this tissue behaves normally (thickens, breaks down, and bleeds) but has no way to exit the body, causing severe pain, cysts, and scar tissue.</p>
+                        
+                        <div class="stat-bubble-group">
+                            <div class="stat-bubble">
+                                <strong>1 in 10</strong>
+                                <span>Women Affected</span>
+                            </div>
+                            <div class="stat-bubble">
+                                <strong>30-50%</strong>
+                                <span>Infertility link</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 4/5 details -->
+                    <div class="card edu-card">
+                        <div class="card-badge">02</div>
+                        <h3>The Gap in Standard Apps</h3>
+                        <p>Most period and cycle-tracking applications focus purely on calendar predictions, ovulation, and PMS warning dates.</p>
+                        <p><strong>They fail to:</strong></p>
+                        <ul>
+                            <li>Analyze chronic, recurring pain patterns across multiple cycles.</li>
+                            <li>Detect overlapping symptom clusters (e.g. menstrual pain + severe bowel discomfort).</li>
+                            <li>Formally flag warnings that should prompt clinical review.</li>
+                        </ul>
+                        <div class="gap-comparison">
+                            <div class="gap-column">
+                                <strong>Standard Trackers</strong>
+                                <p>🗓️ "Your period starts in 3 days."</p>
+                            </div>
+                            <div class="gap-column highlight-border">
+                                <strong>EndoAware</strong>
+                                <p>⚠️ "Warning: Severe pain detected in 3 consecutive cycles. Recommended checkup."</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 9/10 Expansion -->
+                    <div class="card edu-card">
+                        <div class="card-badge">03</div>
+                        <h3>Future Scope & AI</h3>
+                        <p>EndoAware aims to expand digital health by integration of advanced tools:</p>
+                        <ol>
+                            <li><strong>AI-Based Predictive Modeling:</strong> Machine learning algorithms trained on thousands of medical summaries to recognize early-stage indicators.</li>
+                            <li><strong>Wearable Data Integration:</strong> Matching pain thresholds with physiological metrics (heart rate variability, body temperature fluctuation, and sleep patterns).</li>
+                            <li><strong>Tele-Consultation Access:</strong> Connecting high-risk users directly with verified gynecological experts specializing in laparoscopic removal of endometrial growth.</li>
+                        </ol>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Script Entry Point -->
+    <script src="app.js"></script>
+</body>
+</html>
