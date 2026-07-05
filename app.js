@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Set default date picker value to today
     const today = new Date().toISOString().split('T')[0];
     if (dom.logDate) dom.logDate.value = today;
-    if (dom.reportGenDate) dom.reportGenDate.innerText = today;
+    if (dom.reportGenDate) dom.reportGenDate.innerText = formatDate(today);
 });
 
 // --- Event Listeners Setup ---
@@ -247,14 +247,14 @@ function analyzeSymptomPatterns() {
     const percentage = Math.round((totalPoints / maxPossiblePoints) * 100);
     
     // Risk Level mapping
-    let riskLevel = 'LOW';
+    let riskLevel = 'Low Risk';
     let riskDesc = 'Symptom levels suggest a low risk. Continue logging cycles if patterns change.';
     
     if (percentage >= 65) {
-        riskLevel = 'HIGH';
-        riskDesc = 'Significant multi-cycle symptom clusters and pain escalation detected. We strongly suggest consulting a gynecologist.';
+        riskLevel = 'Elevated Risk';
+        riskDesc = 'Significant multi-cycle symptom clusters and pain escalation trends observed. We strongly suggest consulting a healthcare professional.';
     } else if (percentage >= 35) {
-        riskLevel = 'MODERATE';
+        riskLevel = 'Moderate Risk';
         riskDesc = 'Moderate persistent pelvic discomfort or pain logged. Recommended to monitor closely and note trends for your doctor.';
     }
 
@@ -317,16 +317,16 @@ function renderDashboard() {
         dom.txtRiskLevel.style.color = 'var(--text-light)';
         dom.riskAlertBox.style.display = 'none';
     } else {
-        dom.txtRiskScore.innerText = `${analysis.score}% Risk Factor Index`;
+        dom.txtRiskScore.innerText = `${analysis.score}% Symptom Risk Assessment`;
         const offsetVal = 126 - (analysis.score / 100) * 126;
         dom.gaugeIndicator.setAttribute('stroke-dashoffset', offsetVal.toString());
         
         // Match color scheme
-        if (analysis.level === 'LOW') {
+        if (analysis.level === 'Low Risk') {
             dom.gaugeIndicator.setAttribute('stroke', 'var(--success)');
             dom.txtRiskLevel.style.color = 'var(--success)';
             dom.riskAlertBox.style.display = 'none';
-        } else if (analysis.level === 'MODERATE') {
+        } else if (analysis.level === 'Moderate Risk') {
             dom.gaugeIndicator.setAttribute('stroke', 'var(--warning)');
             dom.txtRiskLevel.style.color = 'var(--warning)';
             dom.riskAlertBox.style.display = 'flex';
@@ -338,7 +338,7 @@ function renderDashboard() {
             dom.gaugeIndicator.setAttribute('stroke', 'var(--danger)');
             dom.txtRiskLevel.style.color = 'var(--danger)';
             dom.riskAlertBox.style.display = 'flex';
-            dom.riskAlertText.innerText = "Warning: Multi-cycle pain detected. Seek expert review.";
+            dom.riskAlertText.innerText = "Persistent symptoms detected across multiple cycles. We recommend consulting a gynecologist for further evaluation.";
             dom.riskAlertBox.style.borderColor = 'var(--danger)';
             dom.riskAlertBox.style.backgroundColor = 'var(--accent-light)';
             dom.riskAlertBox.style.color = 'var(--danger)';
@@ -359,9 +359,9 @@ function renderDashboard() {
             const symList = log.symptoms.map(s => `<span class="badge badge-low" style="margin-right:0.25rem;">${s.replace('_', ' ')}</span>`).join('');
             let riskBadge = '<span class="badge badge-low">Low</span>';
             if (log.painScore >= 8) {
-                riskBadge = '<span class="badge badge-high">High</span>';
+                riskBadge = '<span class="badge badge-high">Elevated</span>';
             } else if (log.painScore >= 5) {
-                riskBadge = '<span class="badge badge-mod">Mod</span>';
+                riskBadge = '<span class="badge badge-mod">Moderate</span>';
             }
             
             return `
@@ -465,8 +465,8 @@ function drawTrendChart() {
             dom.trendDirection.innerText = 'Escalating';
             dom.trendDirection.className = 'badge badge-high';
         } else if (diff < 0) {
-            dom.trendDirection.innerText = 'Decreasing';
-            dom.trendDirection.className = 'badge badge-low';
+            dom.trendDirection.innerText = 'Monitoring Progress';
+            dom.trendDirection.className = 'badge badge-mod';
         } else {
             dom.trendDirection.innerText = 'Stable';
             dom.trendDirection.className = 'badge badge-mod';
@@ -540,13 +540,13 @@ function renderPatternInsights() {
         
         if (clusters.length >= 2) {
             dotClustering.className = 'insight-dot red';
-            txtClustering.innerHTML = `<strong>High Correlation Pattern:</strong> Co-occurrence of: <em>${clusters.join(', ')}</em> detected. These multiple non-menstrual parameters indicate potential cellular lesions spreading across ligaments.`;
+            txtClustering.innerHTML = `<strong>High Correlation Pattern:</strong> Co-occurrence of: <em>${clusters.join(', ')}</em> observed. These multiple non-menstrual parameters are recognized clinical co-factors that warrant discussion with a specialist.`;
         } else if (clusters.length === 1) {
             dotClustering.className = 'insight-dot amber';
-            txtClustering.innerText = `Moderate clustering: Only 1 primary co-factor (${clusters[0]}) detected alongside periodic pain.`;
+            txtClustering.innerText = `Moderate clustering: Only 1 primary co-factor (${clusters[0]}) observed alongside periodic pain.`;
         } else {
             dotClustering.className = 'insight-dot green';
-            txtClustering.innerText = "No clustering detected: Pain logged contains no secondary pelvic indicators.";
+            txtClustering.innerText = "No clustering observed: Pain logged contains no secondary pelvic indicators.";
         }
     }
 }
@@ -582,18 +582,18 @@ function renderMedicalReport() {
 
     // Family History status
     const hasFamilyHistory = appState.logs.some(l => l.familyHistory);
-    dom.repFamilyHistory.innerText = hasFamilyHistory ? 'Yes (Maternal/Sibling line confirmed)' : 'No family history indicated';
+    dom.repFamilyHistory.innerText = hasFamilyHistory ? 'Yes (Indicated in Maternal/Sibling line)' : 'No family history indicated';
 
     // Risk Box Styling
-    dom.repRiskLevel.innerText = `${analysis.level} RISK`;
+    dom.repRiskLevel.innerText = analysis.level.toUpperCase();
     dom.repRiskRecommendation.innerText = analysis.desc;
     
     dom.repRiskBox.className = 'report-status-box';
-    if (analysis.level === 'LOW') {
+    if (analysis.level === 'Low Risk') {
         dom.repRiskBox.classList.add('risk-low');
-    } else if (analysis.level === 'MODERATE') {
+    } else if (analysis.level === 'Moderate Risk') {
         dom.repRiskBox.classList.add('risk-mod');
-    } else if (analysis.level === 'HIGH') {
+    } else if (analysis.level === 'Elevated Risk') {
         dom.repRiskBox.classList.add('risk-high');
     }
 
@@ -680,7 +680,7 @@ function loadDemoData() {
     renderApp();
     
     // Alert feedback
-    alert("Ideathon Demo Data successfully loaded! \n- Chronicity: Active (Recurring over 3 cycles)\n- Escalation: Active (Pain 5 -> 7 -> 9)\n- Clustering: Active (4 symptoms overlapping)\n- Risk level is evaluated as HIGH.");
+    alert("Ideathon Demo Data successfully loaded! \n- Chronicity: Active (Recurring over 3 cycles)\n- Escalation: Active (Pain 5 -> 7 -> 9)\n- Clustering: Active (4 symptoms overlapping)\n- Risk level is evaluated as Elevated Risk.");
     
     // Default switch back to dashboard
     switchTab('dashboard');
