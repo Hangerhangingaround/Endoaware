@@ -647,52 +647,197 @@ function renderMedicalReport() {
 }
 
 // --- Pitch Mode Demo Handler ---
-function loadDemoData() {
-    // slide 6 pattern: escalating severe pain & symptoms over 3 cycles
-    appState.logs = [
-        {
-            id: 'demo_1',
-            date: '2026-04-12',
-            painScore: 5,
-            painRegularity: true,
-            symptoms: ['pelvic_pain'],
-            familyHistory: true
-        },
-        {
-            id: 'demo_2',
-            date: '2026-05-10',
-            painScore: 7,
-            painRegularity: true,
-            symptoms: ['pelvic_pain', 'gi_discomfort'],
-            familyHistory: true
-        },
-        {
-            id: 'demo_3',
-            date: '2026-06-08',
-            painScore: 9,
-            painRegularity: true,
-            symptoms: ['pelvic_pain', 'gi_discomfort', 'dyspareunia', 'fatigue'],
-            familyHistory: true
-        }
-    ];
+function getPastDate(daysAgo) {
+    const d = new Date();
+    d.setDate(d.getDate() - daysAgo);
+    return d.toISOString().split('T')[0];
+}
 
+function loadDemoData() {
+    const scenarios = ['escalating', 'gi_overlap', 'atypical'];
+    const scenario = scenarios[Math.floor(Math.random() * scenarios.length)];
+    
+    if (scenario === 'escalating') {
+        appState.logs = [
+            {
+                id: 'demo_e1',
+                date: getPastDate(84), // ~3 cycles ago
+                painScore: 5,
+                painRegularity: true,
+                symptoms: ['pelvic_pain'],
+                familyHistory: true
+            },
+            {
+                id: 'demo_e2',
+                date: getPastDate(56), // ~2 cycles ago
+                painScore: 7,
+                painRegularity: true,
+                symptoms: ['pelvic_pain', 'gi_discomfort'],
+                familyHistory: true
+            },
+            {
+                id: 'demo_e3',
+                date: getPastDate(28), // ~1 cycle ago
+                painScore: 9,
+                painRegularity: true,
+                symptoms: ['pelvic_pain', 'gi_discomfort', 'dyspareunia', 'fatigue'],
+                familyHistory: true
+            }
+        ];
+        
+    } else if (scenario === 'gi_overlap') {
+        appState.logs = [
+            {
+                id: 'demo_g1',
+                date: getPastDate(90),
+                painScore: 6,
+                painRegularity: true,
+                symptoms: ['gi_discomfort', 'fatigue'],
+                familyHistory: false
+            },
+            {
+                id: 'demo_g2',
+                date: getPastDate(60),
+                painScore: 6,
+                painRegularity: true,
+                symptoms: ['pelvic_pain', 'gi_discomfort'],
+                familyHistory: false
+            },
+            {
+                id: 'demo_g3',
+                date: getPastDate(30),
+                painScore: 7,
+                painRegularity: true,
+                symptoms: ['pelvic_pain', 'gi_discomfort', 'fatigue'],
+                familyHistory: false
+            }
+        ];
+        
+    } else if (scenario === 'atypical') {
+        appState.logs = [
+            {
+                id: 'demo_a1',
+                date: getPastDate(84),
+                painScore: 3,
+                painRegularity: false,
+                symptoms: ['fatigue'],
+                familyHistory: false
+            },
+            {
+                id: 'demo_a2',
+                date: getPastDate(56),
+                painScore: 4,
+                painRegularity: false,
+                symptoms: ['backache'],
+                familyHistory: false
+            },
+            {
+                id: 'demo_a3',
+                date: getPastDate(28),
+                painScore: 3,
+                painRegularity: false,
+                symptoms: ['heavy_flow', 'fatigue'],
+                familyHistory: false
+            }
+        ];
+    }
+    
     saveStateToStorage();
     renderApp();
-    
-    // Alert feedback
-    alert("Ideathon Demo Data successfully loaded! \n- Chronicity: Active (Recurring over 3 cycles)\n- Escalation: Active (Pain 5 -> 7 -> 9)\n- Clustering: Active (4 symptoms overlapping)\n- Risk level is evaluated as Elevated Risk.");
-    
-    // Default switch back to dashboard
     switchTab('dashboard');
 }
 
 function clearAppData() {
-    if (confirm("Are you sure you want to reset the EndoAware prototype database?")) {
-        appState.logs = [];
-        saveStateToStorage();
-        renderApp();
-        switchTab('dashboard');
-    }
+    showCustomConfirm(
+        "Reset Database",
+        "Are you sure you want to reset the EndoAware prototype database? This will clear all logged cycles.",
+        () => {
+            appState.logs = [];
+            saveStateToStorage();
+            renderApp();
+            switchTab('dashboard');
+        }
+    );
+}
+
+// --- Custom Modal / Dialog UI System ---
+function showCustomAlert(title, message, callback) {
+    const overlay = document.createElement('div');
+    overlay.className = 'custom-modal-overlay';
+    
+    overlay.innerHTML = `
+        <div class="custom-modal-card">
+            <div class="custom-modal-title">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary);">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                <span>${title}</span>
+            </div>
+            <div class="custom-modal-body">${message}</div>
+            <div class="custom-modal-actions">
+                <button class="btn btn-primary" id="customAlertOkBtn">Got it</button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(overlay);
+    setTimeout(() => overlay.classList.add('active'), 10);
+    
+    const okBtn = overlay.querySelector('#customAlertOkBtn');
+    okBtn.addEventListener('click', () => {
+        overlay.classList.remove('active');
+        setTimeout(() => {
+            overlay.remove();
+            if (callback) callback();
+        }, 250);
+    });
+}
+
+function showCustomConfirm(title, message, onConfirm, onCancel) {
+    const overlay = document.createElement('div');
+    overlay.className = 'custom-modal-overlay';
+    
+    overlay.innerHTML = `
+        <div class="custom-modal-card">
+            <div class="custom-modal-title">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--danger);">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+                <span>${title}</span>
+            </div>
+            <div class="custom-modal-body">${message}</div>
+            <div class="custom-modal-actions">
+                <button class="btn btn-outline" id="customConfirmCancelBtn">Cancel</button>
+                <button class="btn btn-primary" id="customConfirmOkBtn" style="background-color: var(--danger); border-color: var(--danger);">Confirm</button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(overlay);
+    setTimeout(() => overlay.classList.add('active'), 10);
+    
+    const okBtn = overlay.querySelector('#customConfirmOkBtn');
+    const cancelBtn = overlay.querySelector('#customConfirmCancelBtn');
+    
+    okBtn.addEventListener('click', () => {
+        overlay.classList.remove('active');
+        setTimeout(() => {
+            overlay.remove();
+            if (onConfirm) onConfirm();
+        }, 250);
+    });
+    
+    cancelBtn.addEventListener('click', () => {
+        overlay.classList.remove('active');
+        setTimeout(() => {
+            overlay.remove();
+            if (onCancel) onCancel();
+        }, 250);
+    });
 }
 
 // --- Helper Functions ---

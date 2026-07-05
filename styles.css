@@ -71,6 +71,22 @@ body {
     flex-direction: column;
     height: 100%;
     z-index: 10;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) transparent;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background-color: var(--accent);
+    border-radius: 3px;
 }
 
 .brand {
@@ -1452,4 +1468,65 @@ input[type="checkbox"], input[type="radio"] {
     margin: 0;
     font-size: 0.85rem;
     color: var(--text-dark);
+}
+
+/* Custom Dynamic Modals styling */
+.custom-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(55, 22, 27, 0.4); /* Dark burgundy transparent canvas overlay */
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.custom-modal-overlay.active {
+    opacity: 1;
+}
+
+.custom-modal-card {
+    background-color: var(--bg-white);
+    padding: 2rem;
+    border-radius: var(--border-radius-md);
+    width: 90%;
+    max-width: 460px;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid rgba(128, 44, 62, 0.08);
+    transform: translateY(20px);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.custom-modal-overlay.active .custom-modal-card {
+    transform: translateY(0);
+}
+
+.custom-modal-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.custom-modal-body {
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+    white-space: pre-line;
+}
+
+.custom-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
 }
